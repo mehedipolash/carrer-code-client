@@ -3,9 +3,13 @@ import React, { useContext } from "react";
 import signinlottie from "../../assets/signin.json";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 import SocialLogin from "../Shared/SocialLogin";
+import { useLocation, useNavigate } from "react-router";
 
 const SignIn = () => {
   const { signInUser } = useContext(AuthContext); 
+  const location= useLocation();
+  const navigate = useNavigate();
+  const from = location.state || "/";
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -20,6 +24,7 @@ const SignIn = () => {
     signInUser(email, password)
       .then((result) => {
         console.log("User Logged In:", result.user);
+        navigate(from);
       })
       .catch((error) => {
         console.error("Error:", error.message);
@@ -72,7 +77,7 @@ const SignIn = () => {
                 </button>
               </fieldset>
             </form>
-            <SocialLogin></SocialLogin>
+            <SocialLogin from={from}></SocialLogin>
           </div>
         </div>
       </div>

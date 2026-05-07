@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
+import { useNavigate } from "react-router";
 
-const SocialLogin = () => {
-
-
+const SocialLogin = ({ from }) => {
   const { signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then((result) => {
         const user = result.user;
         console.log(user);
+        navigate(from || "/");
       })
       .catch((error) => {
         console.error(error);
@@ -19,7 +20,10 @@ const SocialLogin = () => {
   return (
     <div>
       <div className="divider divider-horizontal">OR</div>
-      <button className="btn bg-white text-black border-[#e5e5e5]" onClick={handleGoogleSignIn}>
+      <button
+        className="btn bg-white text-black border-[#e5e5e5]"
+        onClick={handleGoogleSignIn}
+      >
         <svg
           aria-label="Google logo"
           width="16"
