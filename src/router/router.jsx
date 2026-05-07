@@ -17,6 +17,10 @@ const router = createBrowserRouter([
         Component: Home,
       },
       {
+        path: "/jobs/:id",
+        Component: JobDetails,
+      },
+      {
         path: "/register",
         Component: Register,
       },
