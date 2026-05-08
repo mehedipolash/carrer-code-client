@@ -8,19 +8,25 @@ const Navbar = () => {
   const handleSignOut = () => {
     signOutUser()
       .then(() => {
-        console.log('sign out user');
+        console.log("sign out user");
       })
       .catch((error) => {
-        console.error('Error signing out:', error.message);
+        console.error("Error signing out:", error.message);
       });
   };
 
   const links = (
     <>
       <li>
-        <NavLink to="/"></NavLink>
-        Home
+        <NavLink to="/">Home</NavLink>
       </li>
+      {user && (
+        <>
+          <li>
+            <NavLink to="/myApplications">My Applications</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
   return (

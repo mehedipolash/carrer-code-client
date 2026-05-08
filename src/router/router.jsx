@@ -8,6 +8,7 @@ import SignIn from "../pages/SignIn/SignIn";
 import JobDetails from "../pages/JobDetails/JobDetails";
 import JobApply from "../pages/JobApply/JobApply";
 import PrivateRoute from "./PrivateRoute";
+import MyApplications from "../pages/MyApplications/MyApplications";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,12 @@ const router = createBrowserRouter([
             <JobApply />
           </PrivateRoute>
         ),
+      },
+      {
+       path: "/myApplications",
+       element: <PrivateRoute>
+          <MyApplications />
+       </PrivateRoute>
       },
       {
         path: "/register",
