@@ -1,12 +1,54 @@
 import React from "react";
+import useAuth from "../../hooks/UseAuth";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const AddJob = () => {
+  const { user } = useAuth();
+
   const handleAddAJob = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
+    // console.log(data);
+
+    // process the salary range data
+    const { min, max, currency, ...newJob } = data;
+    newJob.salaryRange = { min, max, currency };
+
+    //process requirments
+    const requirmentsString = newJob.requirments;
+    const requirmentsDirty = requirmentsString.split(",");
+    const requirmentsClean = requirmentsDirty.map((req) => req.trim());
+    newJob.requirments = requirmentsClean;
+
+    // process responsibilities
+    newJob.responsibilities = newJob.responsibilities
+      .split(",")
+      .map((res) => res.trim());
+
+    newJob.status = "active";
+    console.log(newJob);
+
+    // save job to the database
+
+    axios
+      .post("http://localhost:3000/jobs", newJob)
+      .then((res) => {
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "This new job has been saved and published",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -60,18 +102,21 @@ const AddJob = () => {
               className="btn filter-reset"
               type="radio"
               name="jobType"
+              value="On-Site"
               aria-label="On-Site"
             />
             <input
               className="btn"
               type="radio"
               name="jobType"
+              value="Remote"
               aria-label="Remote"
             />
             <input
               className="btn"
               type="radio"
               name="jobType"
+              value="Hybrid"
               aria-label="Hybrid"
             />
           </div>
@@ -91,12 +136,6 @@ const AddJob = () => {
             <option>Marketing</option>
             <option>Finance</option>
           </select>
-        </fieldset>
-
-        {/* Application Deadline  */}
-        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
-          <legend className="fieldset-legend">Application Deadline</legend>
-          <input type="date" className="input" />
         </fieldset>
 
         {/* Salary Range */}
@@ -193,10 +232,18 @@ const AddJob = () => {
           <input
             type="email"
             name="hr_email"
+            defaultValue={user.email}
             className="input"
             placeholder="HR Email"
           />
         </fieldset>
+
+        {/* Application Deadline  */}
+        <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
+          <legend className="fieldset-legend">Application Deadline</legend>
+          <input type="date" name="deadline" className="input" />
+        </fieldset>
+
         <input className="btn" type="submit" value="Add Job" />
       </form>
     </div>
