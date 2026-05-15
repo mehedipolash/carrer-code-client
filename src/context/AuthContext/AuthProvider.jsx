@@ -9,10 +9,10 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase/firebase.config";
-
+import axios from "axios";
+import { tr } from "motion/react-client";
 
 const googleProvider = new GoogleAuthProvider();
-
 
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
@@ -32,17 +32,30 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-   
+
   const signInWithGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
 
   useEffect(() => {
-   
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+
+      if (currentUser?.email) {
+        axios
+          .post(
+            "http://localhost:3000/jwt",
+            { email: currentUser.email },
+            { withCredentials: true },
+          )
+          .then((res) => console.log(res.data))
+          .catch((err) => console.log(err));
+      }
+      console.log("user in the auth state change", currentUser);
+
+      // after created jwt in backend
     });
 
     return () => unsubscribe();
