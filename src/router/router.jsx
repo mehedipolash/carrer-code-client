@@ -12,11 +12,13 @@ import MyApplications from "../pages/MyApplications/MyApplications";
 import AddJob from "../pages/AddJob/AddJob";
 import MyPostedJobs from "../pages/MyPostedJobs/MyPostedJobs";
 import ViewApplications from "../pages/ViewApplications/ViewApplications";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,
@@ -25,7 +27,7 @@ const router = createBrowserRouter([
       {
         path: "/jobs/:id",
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/jobs/${params.id}`),
+          fetch(`https://career-code-server-blond.vercel.app/jobs/${params.id}`),
 
         Component: JobDetails,
       },
@@ -71,7 +73,7 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/applications/job/${params.job_id}`),
+          fetch(`https://career-code-server-blond.vercel.app/applications/job/${params.job_id}`),
       },
 
       {

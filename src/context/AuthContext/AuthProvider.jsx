@@ -46,14 +46,14 @@ const AuthProvider = ({ children }) => {
       if (currentUser?.email) {
         axios
           .post(
-            "http://localhost:3000/jwt",
+            "https://career-code-server-blond.vercel.app/jwt",
             { email: currentUser.email },
             { withCredentials: true },
           )
           .then((res) => console.log(res.data))
           .catch((err) => console.log(err));
       }
-      console.log("user in the auth state change", currentUser);
+      // console.log("user in the auth state change", currentUser);
 
       // after created jwt in backend
     });
