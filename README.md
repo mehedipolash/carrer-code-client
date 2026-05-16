@@ -140,7 +140,7 @@ The app supports **dark and light modes** toggled from the navbar. The preferenc
 
 **Mehedi Hasan**
 
-- GitHub: [@mehedipolash](https://github.com/mehedipolash)
+- GitHub: [@mehedipolash]([https://github.com/mehedipolash](https://github.com/mehedipolash/carrer-code-client))
 - Live: [career-code-7eae1.web.app](https://career-code-7eae1.web.app)
 
 ---
