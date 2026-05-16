@@ -88,7 +88,7 @@
 
 
 import React from "react";
-import { Link, useParams } from "react-router";
+import { Link, useParams, useNavigate } from "react-router";
 import { motion } from "motion/react";
 import UseAuth from "../../hooks/UseAuth";
 import axios from "axios";
@@ -97,6 +97,7 @@ import Swal from "sweetalert2";
 const JobApply = () => {
   const { id: jobId } = useParams();
   const { user } = UseAuth();
+  const navigate = useNavigate();
 
   const handleApplyFormSubmit = (e) => {
     e.preventDefault();
@@ -121,6 +122,8 @@ const JobApply = () => {
             timer: 1500,
             background: "#0f172a",
             color: "#f1f5f9",
+          }).then(() => {
+            navigate("/myApplications");
           });
           form.reset();
         }

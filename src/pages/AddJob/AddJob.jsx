@@ -255,6 +255,7 @@
 
 
 import React from "react";
+import { useNavigate } from "react-router";
 import { motion } from "motion/react";
 import useAuth from "../../hooks/UseAuth";
 import axios from "axios";
@@ -262,6 +263,7 @@ import Swal from "sweetalert2";
 
 const AddJob = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleAddAJob = (e) => {
     e.preventDefault();
@@ -278,6 +280,7 @@ const AddJob = () => {
       .post("https://career-code-server-blond.vercel.app/jobs", newJob)
       .then((res) => {
         if (res.data.insertedId) {
+          form.reset();
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -286,8 +289,9 @@ const AddJob = () => {
             timer: 1500,
             background: "#0f172a",
             color: "#f1f5f9",
+          }).then(() => {
+            navigate("/myPostedJobs");
           });
-          form.reset();
         }
       })
       .catch((err) => console.log(err));
