@@ -1,9 +1,10 @@
+
+// TopCategories.jsx
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { FaMapMarkerAlt, FaClock, FaSearch, FaTimes } from "react-icons/fa";
-import { Link } from "react-router";
 import searchLottie from "../../assets/Search.json";
 
 const CATEGORY_CONFIG = {
@@ -36,7 +37,7 @@ const Highlight = ({ text = "", query = "" }) => {
   );
 };
 
-// Mini job card for search results — same style as JobsCard
+// Mini job card for search results
 const SearchResultCard = ({ job, query, onClick }) => {
   const { title, company, location, category, applicationDeadline, description, company_logo, requirements, salaryRange, _id } = job;
   const config = CATEGORY_CONFIG[category] || DEFAULT_CONFIG;
@@ -50,7 +51,6 @@ const SearchResultCard = ({ job, query, onClick }) => {
       onClick={onClick}
       className="group bg-slate-900 border border-white/8 rounded-2xl overflow-hidden hover:border-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 cursor-pointer flex flex-col"
     >
-      {/* Header */}
       <div className="p-4 pb-3 flex items-start gap-3">
         <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 flex-shrink-0 bg-slate-800">
           <img src={company_logo} alt={company} className="w-full h-full object-cover" />
@@ -69,7 +69,6 @@ const SearchResultCard = ({ job, query, onClick }) => {
         </span>
       </div>
 
-      {/* Title + Salary */}
       <div className="px-4 pb-2">
         <h2 className="text-white font-bold text-base leading-snug group-hover:text-indigo-300 transition-colors">
           <Highlight text={title} query={query} />
@@ -81,12 +80,10 @@ const SearchResultCard = ({ job, query, onClick }) => {
         </p>
       </div>
 
-      {/* Description */}
       <div className="px-4 pb-3">
         <p className="text-slate-500 text-xs leading-relaxed line-clamp-2">{description}</p>
       </div>
 
-      {/* Skills */}
       <div className="px-4 pb-3 flex flex-wrap gap-1.5">
         {requirements?.slice(0, 3).map((skill, i) => (
           <span key={i} className="text-xs font-medium text-slate-300 bg-slate-800 border border-white/8 rounded-lg px-2 py-0.5">
@@ -100,7 +97,6 @@ const SearchResultCard = ({ job, query, onClick }) => {
         )}
       </div>
 
-      {/* Footer */}
       <div className="mt-auto px-4 py-3 border-t border-white/8 flex items-center justify-between">
         <div>
           <span className={`text-xs font-semibold ${config.color} ${config.bg} border ${config.border} rounded-full px-2 py-0.5`}>
@@ -165,7 +161,6 @@ const TopCategories = () => {
       });
   }, []);
 
-  // Live search filtering
   const searchResults = searchQuery.trim().length > 0
     ? jobs.filter((job) => {
         const q = searchQuery.toLowerCase();
@@ -207,7 +202,6 @@ const TopCategories = () => {
 
   return (
     <section className="relative overflow-hidden bg-[#0a0e1a] py-24 px-6 border-t border-white/5">
-
       {/* Grid background */}
       <div
         className="absolute inset-0 opacity-10"
@@ -230,11 +224,9 @@ const TopCategories = () => {
         className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-violet-500/15 blur-[100px] pointer-events-none"
       />
 
-      {/* Particles */}
       {particles.map((p, i) => <Particle key={i} style={p} />)}
 
       <div className="relative z-10 max-w-7xl mx-auto">
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -256,7 +248,6 @@ const TopCategories = () => {
             />
             Explore
           </motion.span>
-
           <h2 className="text-4xl lg:text-5xl font-black text-white">
             Browse by{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-pink-400">
@@ -268,7 +259,7 @@ const TopCategories = () => {
           </p>
         </motion.div>
 
-        {/* ── Search Bar ── */}
+        {/* ── RESPONSIVE SEARCH BAR (fixed for mobile) ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -282,10 +273,10 @@ const TopCategories = () => {
                 ? "0 0 0 2px rgba(99,102,241,0.5), 0 0 30px rgba(99,102,241,0.15)"
                 : "0 0 0 1px rgba(255,255,255,0.08)",
             }}
-            className="relative flex items-center bg-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/8 overflow-hidden"
+            className="relative flex flex-wrap items-center bg-slate-900/80 backdrop-blur-sm rounded-2xl border border-white/8 overflow-hidden"
           >
-            {/* Lottie icon */}
-            <div className="w-12 h-12 flex items-center justify-center shrink-0 ml-1 pointer-events-none">
+            {/* Lottie icon – hidden on very small screens */}
+            <div className="hidden sm:flex w-12 h-12 items-center justify-center shrink-0 ml-1 pointer-events-none">
               <Player autoplay loop src={searchLottie} style={{ width: 34, height: 34 }} />
             </div>
 
@@ -302,7 +293,7 @@ const TopCategories = () => {
               onBlur={() => { setTimeout(() => { setSearchFocused(false); setShowResults(false); }, 200); }}
               onKeyDown={handleKeyDown}
               placeholder="Search by title, company, skill, location..."
-              className="flex-1 bg-transparent text-white placeholder-slate-500 text-sm py-4 pr-2 outline-none"
+              className="flex-1 min-w-[140px] bg-transparent text-white placeholder-slate-500 text-sm py-3 sm:py-4 px-3 outline-none"
             />
 
             {/* Result count badge */}
@@ -312,14 +303,14 @@ const TopCategories = () => {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  className="text-xs font-bold text-indigo-300 bg-indigo-500/15 border border-indigo-500/20 rounded-full px-2 py-0.5 mr-2 shrink-0"
+                  className="text-xs font-bold text-indigo-300 bg-indigo-500/15 border border-indigo-500/20 rounded-full px-2 py-0.5 mr-1 shrink-0"
                 >
                   {searchResults.length}
                 </motion.span>
               )}
             </AnimatePresence>
 
-            {/* Clear */}
+            {/* Clear button */}
             <AnimatePresence>
               {searchQuery && (
                 <motion.button
@@ -327,17 +318,17 @@ const TopCategories = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   onClick={handleClear}
-                  className="mr-2 w-7 h-7 rounded-full bg-white/8 hover:bg-white/15 text-slate-400 hover:text-white flex items-center justify-center transition-all shrink-0"
+                  className="mr-1 w-7 h-7 rounded-full bg-white/8 hover:bg-white/15 text-slate-400 hover:text-white flex items-center justify-center transition-all shrink-0"
                 >
                   <FaTimes size={10} />
                 </motion.button>
               )}
             </AnimatePresence>
 
-            {/* Search button */}
+            {/* Search button – compact and mobile-friendly */}
             <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => {
                 if (searchResults.length === 1) {
                   navigate(`/jobs/${searchResults[0]._id}`);
@@ -345,15 +336,15 @@ const TopCategories = () => {
                   document.getElementById("hot-jobs")?.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-              className="m-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white shrink-0 flex items-center gap-2"
+              className="m-1 sm:m-2 px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white shrink-0 flex items-center gap-1 sm:gap-2"
               style={{ background: "linear-gradient(135deg, #4f46e5, #7c3aed)" }}
             >
-              <FaSearch size={11} />
-              Search
+              <FaSearch size={10} className="sm:w-3 sm:h-3" />
+              <span className="hidden xs:inline">Search</span>
             </motion.button>
           </motion.div>
 
-          {/* ── Search Results Panel ── */}
+          {/* ── Search Results Panel (unchanged) ── */}
           <AnimatePresence>
             {showResults && searchQuery.trim().length > 0 && (
               <motion.div
@@ -365,15 +356,12 @@ const TopCategories = () => {
               >
                 {searchResults.length > 0 ? (
                   <>
-                    {/* Results header */}
                     <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-white/5">
                       <p className="text-xs text-slate-500 font-medium">
                         <span className="text-indigo-400 font-bold">{searchResults.length}</span> job{searchResults.length !== 1 ? "s" : ""} matched
                       </p>
                       <p className="text-xs text-slate-600">Click to view details</p>
                     </div>
-
-                    {/* Cards grid */}
                     <div className={`p-3 grid gap-3 max-h-[520px] overflow-y-auto ${
                       searchResults.length === 1 ? "grid-cols-1" :
                       searchResults.length === 2 ? "grid-cols-2" :
@@ -388,8 +376,6 @@ const TopCategories = () => {
                         />
                       ))}
                     </div>
-
-                    {/* View all footer */}
                     {searchResults.length > 6 && (
                       <motion.div
                         onClick={() => {
@@ -403,7 +389,6 @@ const TopCategories = () => {
                     )}
                   </>
                 ) : (
-                  /* No results */
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

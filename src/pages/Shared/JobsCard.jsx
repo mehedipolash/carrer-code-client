@@ -156,7 +156,8 @@ const JobsCard = ({ job }) => {
             Deadline: {applicationDeadline}
           </p>
         </div>
-        <Link to={`/jobs/${_id}`}>
+        {/* 👇 FIX: scroll to top when navigating */}
+        <Link to={`/jobs/${_id}`} onClick={() => window.scrollTo(0, 0)}>
           <button className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-semibold shadow-lg shadow-indigo-500/20">
             View Details
           </button>
