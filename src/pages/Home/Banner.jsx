@@ -330,7 +330,7 @@ const Banner = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-16 flex flex-col lg:flex-row items-center gap-10">
 
         {/* ── Left: Text ── */}
-        <div className="flex-1 text-white max-w-xl text-center lg:text-left">
+        {/* <div className="flex-1 text-white max-w-xl text-center lg:text-left">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -386,7 +386,88 @@ const Banner = () => {
               Get Started
             </motion.button>
           </motion.div>
-        </div>
+        </div> */}
+
+        <div className="flex-1 text-white max-w-xl text-center lg:text-left">
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6 }}
+  >
+    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-indigo-400 bg-indigo-500/10 border border-indigo-500/30 rounded-full px-4 py-1.5 mb-6">
+      #1 Job Platform
+    </span>
+  </motion.div>
+
+  <motion.h1
+    className="text-3xl sm:text-4xl lg:text-6xl font-black leading-tight mb-6"
+    initial={{ opacity: 0, y: 24 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.1 }}
+  >
+    Find Your{" "}
+    <motion.span
+      animate={{ color: ["#818cf8", "#a78bfa", "#f472b6"] }}
+      transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+    >
+      Dream
+    </motion.span>
+    <br />
+    Job Today
+  </motion.h1>
+
+  {/* Job type tags — Remote / Hybrid / On-Site */}
+  <motion.div
+    className="flex flex-wrap gap-3 justify-center lg:justify-start mb-6"
+    initial={{ opacity: 0, y: 24 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.15 }}
+  >
+    {[
+      { label: "Remote",  icon: "🌍", color: "text-emerald-400", bg: "bg-emerald-400/10", border: "border-emerald-400/20" },
+      { label: "Hybrid",  icon: "🏙️", color: "text-amber-400",   bg: "bg-amber-400/10",   border: "border-amber-400/20"   },
+      { label: "On-Site", icon: "🏢", color: "text-indigo-400",  bg: "bg-indigo-400/10",  border: "border-indigo-400/20"  },
+    ].map((type, i) => (
+      <motion.span
+        key={type.label}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.2 + i * 0.08, type: "spring", stiffness: 200 }}
+        whileHover={{ scale: 1.08, transition: { duration: 0.15 } }}
+        className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border ${type.color} ${type.bg} ${type.border} cursor-default`}
+      >
+        <span>{type.icon}</span>
+        {type.label}
+      </motion.span>
+    ))}
+  </motion.div>
+
+  <motion.p
+    className="text-slate-400 text-base lg:text-lg leading-relaxed mb-8"
+    initial={{ opacity: 0, y: 24 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.2 }}
+  >
+    Discover thousands of opportunities across remote, hybrid, and on-site roles from top companies worldwide.
+  </motion.p>
+
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: 0.3 }}
+  >
+    <motion.button
+      onClick={() =>
+        document.getElementById("hot-jobs")?.scrollIntoView({ behavior: "smooth" })
+      }
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.97 }}
+      className="px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition-colors font-semibold text-white shadow-lg shadow-indigo-500/25"
+    >
+      Get Started
+    </motion.button>
+  </motion.div>
+</div>
 
         {/* ── Right: Stacked images like reference ── */}
         <div className="flex-1 flex justify-center items-center w-full">

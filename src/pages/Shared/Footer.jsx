@@ -111,15 +111,25 @@
 
 // export default Footer;
 // Footer.jsx
+
+
 import React from "react";
 import Lottie from "lottie-react";
 import footer from "../../../src/assets/footer.json";
 
 const Footer = () => {
   const socialLinks = [
-    { name: "Twitter", url: "https://twitter.com/", icon: "twitter" },
-    { name: "LinkedIn", url: "https://linkedin.com/", icon: "linkedin" },
-    { name: "GitHub", url: "https://github.com/", icon: "github" },
+    { name: "Twitter", url: "https://twitter.com/OpenAI", icon: "twitter" },
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/company/openai/",
+      icon: "linkedin",
+    },
+    {
+      name: "GitHub",
+      url: "https://github.com/facebook/react",
+      icon: "github",
+    },
   ];
 
   const SocialIcon = ({ name }) => {
@@ -152,13 +162,16 @@ const Footer = () => {
 
   return (
     <footer className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-black border-t border-white/10 pt-14 pb-6">
+      {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-indigo-500/10 blur-3xl rounded-full pointer-events-none"></div>
 
       <div className="relative max-w-7xl mx-auto px-6">
+        {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           
           {/* Left Side */}
           <div>
+            {/* Logo */}
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-2xl bg-indigo-600/90 shadow-lg shadow-indigo-500/30 flex items-center justify-center flex-shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -189,7 +202,7 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Social */}
+            {/* Social Links */}
             <div className="flex gap-4 mt-8">
               {socialLinks.map((social) => (
                 <a
@@ -207,8 +220,12 @@ const Footer = () => {
 
           {/* Right Side */}
           <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-sm">
-              <Lottie animationData={footer} loop={true} />
+            <div className="w-72 h-72 lg:w-80 lg:h-80 flex-shrink-0">
+              <Lottie
+                animationData={footer}
+                loop={true}
+                style={{ width: "100%", height: "100%" }}
+              />
             </div>
           </div>
         </div>
