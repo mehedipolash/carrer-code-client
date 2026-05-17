@@ -57,8 +57,119 @@
 
 // export default ApplicationList;
 
-// ApplicationList.jsx – fully responsive (cards on mobile, table on desktop)
-import React, { use, useState } from "react";
+
+
+
+
+// import React, { use, useState } from "react";
+// import { motion, AnimatePresence } from "motion/react";
+// import JobApplicationsRow from "./JobApplicationsRow";
+
+// const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
+//   const initialApplications = use(MyApplicationsPromise);
+//   const [applications, setApplications] = useState(initialApplications);
+
+//   // Compute synchronously — no useEffect delay
+//   const total = applications.length;
+//   const underReview = applications.filter(
+//     (a) => !a.status || a.status === "pending" || a.status === "under_review"
+//   ).length;
+//   const interviews = applications.filter(
+//     (a) => a.status === "interview" || a.status === "shortlisted"
+//   ).length;
+//   const offers = applications.filter(
+//     (a) => a.status === "hired" || a.status === "offer"
+//   ).length;
+
+//   // Pass stats up on every render — safe because values are derived, not set in effect
+//   onStatsChange?.({ total, underReview, interviews, offers });
+
+//   const handleDelete = (id) => {
+//     fetch(`https://career-code-server-blond.vercel.app/applications/${id}`, {
+//       method: "DELETE",
+//     })
+//       .then((res) => res.json())
+//       .then((data) => {
+//         if (data.deletedCount) {
+//           setApplications((prev) => prev.filter((a) => a._id !== id));
+//         }
+//       });
+//   };
+
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, y: 16 }}
+//       animate={{ opacity: 1, y: 0 }}
+//       transition={{ duration: 0.5, delay: 0.2 }}
+//       className="bg-slate-900 border border-white/8 rounded-2xl overflow-hidden"
+//     >
+//       <div className="px-6 py-5 border-b border-white/8 flex items-center justify-between">
+//         <div>
+//           <h3 className="text-white font-bold text-xl">My Applications</h3>
+//           <p className="text-slate-500 text-sm mt-0.5">
+//             {applications.length} {applications.length === 1 ? "job" : "jobs"} applied
+//           </p>
+//         </div>
+//         <motion.div
+//           key={applications.length}
+//           initial={{ scale: 0.8, opacity: 0 }}
+//           animate={{ scale: 1, opacity: 1 }}
+//           className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center"
+//         >
+//           <span className="text-indigo-400 font-black text-sm">{applications.length}</span>
+//         </motion.div>
+//       </div>
+
+//       {applications.length === 0 ? (
+//         <motion.div
+//           initial={{ opacity: 0 }}
+//           animate={{ opacity: 1 }}
+//           className="flex flex-col items-center justify-center py-20 px-6 text-center"
+//         >
+//           <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-white/8 flex items-center justify-center mb-4">
+//             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="w-8 h-8 text-slate-600" stroke="currentColor" strokeWidth={1.5}>
+//               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+//             </svg>
+//           </div>
+//           <p className="text-white font-semibold text-lg">No applications yet</p>
+//           <p className="text-slate-500 text-sm mt-1">Start applying to jobs and track them here.</p>
+//         </motion.div>
+//       ) : (
+//         <div className="overflow-x-auto">
+//           <table className="w-full">
+//             <thead>
+//               <tr className="border-b border-white/5">
+//                 <th className="text-left py-3 pl-4 text-xs font-semibold text-slate-600 uppercase tracking-widest w-10">#</th>
+//                 <th className="text-left py-3 text-xs font-semibold text-slate-600 uppercase tracking-widest">Company</th>
+//                 <th className="text-left py-3 text-xs font-semibold text-slate-600 uppercase tracking-widest">Position</th>
+//                 <th className="text-left py-3 text-xs font-semibold text-slate-600 uppercase tracking-widest">Status</th>
+//                 <th className="text-left py-3 pr-4 text-xs font-semibold text-slate-600 uppercase tracking-widest">Action</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               <AnimatePresence>
+//                 {applications.map((application, index) => (
+//                   <JobApplicationsRow
+//                     key={application._id}
+//                     index={index}
+//                     application={application}
+//                     handleDelete={handleDelete}
+//                   />
+//                 ))}
+//               </AnimatePresence>
+//             </tbody>
+//           </table>
+//         </div>
+//       )}
+//     </motion.div>
+//   );
+// };
+
+// export default ApplicationList;
+
+
+// ApplicationList.jsx – with flexible data access
+import { use, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import JobApplicationsRow from "./JobApplicationsRow";
 
@@ -66,7 +177,10 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
   const initialApplications = use(MyApplicationsPromise);
   const [applications, setApplications] = useState(initialApplications);
 
-  // Compute stats synchronously
+  // Debug: log first application to see structure (remove after fixing)
+  console.log("Sample application:", applications[0]);
+
+  // Compute stats
   const total = applications.length;
   const underReview = applications.filter(
     (a) => !a.status || a.status === "pending" || a.status === "under_review"
@@ -78,7 +192,6 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
     (a) => a.status === "hired" || a.status === "offer"
   ).length;
 
-  // Pass stats up on every render
   onStatsChange?.({ total, underReview, interviews, offers });
 
   const handleDelete = (id) => {
@@ -93,7 +206,6 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
       });
   };
 
-  // Helper to get status badge style & label
   const getStatusBadge = (status) => {
     const normalized = (status || "pending").toLowerCase();
     if (normalized === "under_review" || normalized === "pending")
@@ -103,6 +215,28 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
     if (normalized === "hired" || normalized === "offer")
       return { label: "Offer", color: "bg-violet-500/10 text-violet-400 border-violet-500/20" };
     return { label: status || "Pending", color: "bg-slate-700/50 text-slate-300 border-white/10" };
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "Date not set";
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? "Invalid date" : date.toLocaleDateString();
+  };
+
+  // Helper to extract job title from application (handles multiple structures)
+  const getJobTitle = (app) => {
+    if (app.jobId?.title) return app.jobId.title;
+    if (app.job?.title) return app.job.title;
+    if (app.title) return app.title;
+    if (app.position) return app.position;
+    return "Position not specified";
+  };
+
+  const getCompanyName = (app) => {
+    if (app.jobId?.company) return app.jobId.company;
+    if (app.job?.company) return app.job.company;
+    if (app.company) return app.company;
+    return "Unknown company";
   };
 
   return (
@@ -145,7 +279,7 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
         </motion.div>
       ) : (
         <>
-          {/* ------------------------- DESKTOP TABLE ------------------------- */}
+          {/* Desktop table */}
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -172,11 +306,15 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
             </table>
           </div>
 
-          {/* ------------------------- MOBILE CARD VIEW ------------------------- */}
+          {/* Mobile cards – now with robust data extraction */}
           <div className="block md:hidden divide-y divide-white/8">
             <AnimatePresence>
-              {applications.map((application, idx) => {
+              {applications.map((application) => {
                 const statusInfo = getStatusBadge(application.status);
+                const jobTitle = getJobTitle(application);
+                const companyName = getCompanyName(application);
+                const appliedDate = formatDate(application.appliedAt);
+
                 return (
                   <motion.div
                     key={application._id}
@@ -188,15 +326,15 @@ const ApplicationList = ({ MyApplicationsPromise, onStatsChange }) => {
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <p className="text-white font-semibold">{application.jobId?.title || "Position not specified"}</p>
-                        <p className="text-slate-400 text-sm">{application.jobId?.company || "Unknown company"}</p>
+                        <p className="text-white font-semibold">{jobTitle}</p>
+                        <p className="text-slate-400 text-sm">{companyName}</p>
                       </div>
                       <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${statusInfo.color}`}>
                         {statusInfo.label}
                       </span>
                     </div>
                     <div className="flex justify-between items-center mt-2">
-                      <span className="text-slate-500 text-xs">Applied: {new Date(application.appliedAt).toLocaleDateString()}</span>
+                      <span className="text-slate-500 text-xs">Applied: {appliedDate}</span>
                       <button
                         onClick={() => handleDelete(application._id)}
                         className="text-rose-400 hover:text-rose-300 transition-colors text-sm font-medium flex items-center gap-1"
